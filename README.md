@@ -125,10 +125,10 @@ To use the Student Management System, follow the provided installation instructi
 
 ## Contributors
 
-1. (Raymond Ong'ang'a)[https://github.com/RayRae511]
-2. (Neema Nachok)[https://github.com/neemanachok29]
-3. (Brian Atuti)[https://github.com/B-atuti]
-4. (Ezra Machoka)[https://github.com/EzraMachoka]
+1. [Raymond Ong'ang'a](https://github.com/RayRae511)
+2. [Neema Nachok](https://github.com/neemanachok29)
+3. [Brian Atuti](https://github.com/B-atuti)
+4. [Ezra Machoka](https://github.com/EzraMachoka)
 
 
 ## License
