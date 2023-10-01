@@ -124,10 +124,10 @@ Follow these steps to install and run the Student Management System:
 To use the Student Management System, follow the provided installation instructions. Once the system is running, you can access the log-in page, enroll in courses, and view student details as needed.
 
 ## Contributors
-(Raymond Ong'ang'a)[https://github.com/RayRae511]
-(Neema Nachok)[https://github.com/neemanachok29]
-(Brian Atuti)[https://github.com/B-atuti]
-(Ezra Machoka)[https://github.com/EzraMachoka]
+1. (Raymond Ong'ang'a)[https://github.com/RayRae511]
+2. (Neema Nachok)[https://github.com/neemanachok29]
+3. (Brian Atuti)[https://github.com/B-atuti]
+4. (Ezra Machoka)[https://github.com/EzraMachoka]
 
 ## License
 This project is licensed under the [MIT LICENCSE](https://github.com/mit-license/mit-license)
