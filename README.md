@@ -30,7 +30,7 @@ Our Minimum Viable Product (MVP) includes the core features necessary for a func
 
 ## Technologies Used
 
-- **Front-end Development :**
+- **Front-end Development (UI):**
    - **React**: A JavaScript library for building user interfaces.
 
      To install React, you'll need Node.js and npm (Node Package Manager). After installing Node.js, you can install React using npx:
