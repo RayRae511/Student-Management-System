@@ -37,7 +37,7 @@ const Admin = () => {
           <div className='mb-2'>
             <label
             htmlFor="admin"
-            className='block text-s font-semibold text-black'
+            className='block font-semibold text-black text-s'
             >
               Username
                <input 
@@ -67,7 +67,15 @@ const Admin = () => {
             required
             />
           </div>
+          <div className=''>
+            <button className='w-full px-4 py-2 tracking-wide text-white bg-blue-400 cursor-pointer transit hover:bg-white hover:text-blue-400' type='submit'>Log in</button>
+          </div>
         </form>
+        <p className='mt-8 text-xs font-light text-center text-black'>
+          {""}
+          Are you a student?
+          <a href='./Login' className='font-medium text-blue-400 cursor-pointer hover:underline hover:text-black text-decoration-none'>Log back in!</a> <a href='./Signup' className='font-medium text-blue-600 cursor-pointer hover:underline hover:text-black text-decoration-none' >Sign Up</a>
+        </p>
       </div>
     </div>
   )
