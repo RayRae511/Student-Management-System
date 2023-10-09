@@ -11,7 +11,7 @@ app = Flask(__name__)
 jwt = JWTManager(app)
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 app.config['SECRET_KEY'] = 'THISISOURSECRETKEYLOLXD'
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user-data.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user_data.db"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = True
 bcrypt = Bcrypt(app)
@@ -46,17 +46,17 @@ def login():
             {'WWW-Authenticate': 'Basic realm ="User does not exist !!"'}
         )
 
-    if check_password_hash(user.password, auth.get('password')):
+    if bcrypt.check_password_hash(user.password.decode('utf-8'), auth.get('password')):
         # Generate the JWT Token
-        token = jwt.encode({
-            'public_id': user.public_id,
+        token = create_access_token({
+            'public_id': user.id,
             'exp': datetime.utcnow() + timedelta(minutes=30)
         }, app.config['SECRET_KEY'])
 
         # Print the generated token for debugging
-        print(f"Token generated: {token.decode('utf-8')}")
+        #print(f"Token generated: {token.decode('utf-8')}")
 
-        return make_response(jsonify({'token': token.decode('UTF-8')}), 201)
+        return make_response(jsonify({'token': token}), 201)
     # returns 403 if the password is wrong
     return make_response(
         'Could not verify',
@@ -82,20 +82,20 @@ def admin_login():
 @jwt_required
 def get_admin_data():
     current_user = get_jwt_identity()
-    data = {'admin@example.com': 'Admin data'}
+    data = {'admin@scholar.com': 'Admin data'}
     if current_user in data:
         return {'data': data[current_user]}
     
     return {'Error 404! Data not found'}, 404
 
-#@app.route('/protected', methods=['GET'])
+
 @app.route("/Signup", methods=["POST"])
 def signup():
     email = request.json['email']
     password = request.json['password']
 
     user_exists = User.query.filter_by(email=email).first() is not None
-    #password_exists = User.query.filter_by(password=password).first() is not None
+    
 
     if user_exists:
         return jsonify({"message":"There's a user that already exist!"}), 409

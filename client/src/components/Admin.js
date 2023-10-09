@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import SignUp from './Signup';
+import { useNavigate } from 'react-router-dom';
 
 
 const Admin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
+  const navigate = useNavigate()
+
   useEffect(() => {
     const savedEmail = localStorage.getItem("email");
     const savedPassword = localStorage.getItem("password");
@@ -27,12 +28,13 @@ const Admin = () => {
       })
       .then((response) => {
         const token = response.data.token;
-        alert('Signed up successfully');
+        alert('Welcome back admin!');
         localStorage.setItem('token', token);
+        navigate('http://127.0.0.1:5000/details')
       })
       .catch((error) => {
-        console.error('Signup error:', error);
-        setError('Signup failed. Please try again.');
+        console.error('Log in error:', error);
+        setError('Log in failed. Please try again.');
       });
   };
 
@@ -54,7 +56,8 @@ const Admin = () => {
   return (
     <div className='relative flex flex-col justify-center min-h-screen overflow-hidden'>
       <div className='w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-blue-400/60 ring ring-2 ring-gray-500 lg:max-w-xl'>
-        <h1 className='text-3xl font-semibold text-center text-black'>Admin Login</h1>
+        <h1 className='mt-3 text-3xl font-bold text-center text-black'>SCHOLAR STUDENT MS</h1>
+        <h2 className='mt-3 text-3xl text-center text-black'>Admin Login</h2>
         <form className='mt-6' onSubmit={handleSubmit}>
           <div className='mb-2'>
             <label
@@ -95,7 +98,7 @@ const Admin = () => {
         </form>
         <button
         type='submit'
-        className='w-full px-4 py-2 tracking-wide text-white bg-blue-400 cursor-pointer transit hover:bg-white hover:text-blue-400'
+        className='w-full px-4 py-2 mt-5 tracking-wide text-white bg-blue-400 border cursor-pointer hover:border-blue-400 transit hover:bg-white hover:text-blue-400 rounded-xl'
         onClick={handleAdmin}
         >
           Log in
