@@ -1,4 +1,4 @@
-# Student Management System
+# Scholar Student Management System
 
 ## Table of Contents
 - [Overview](#overview)
@@ -47,7 +47,6 @@ Our Minimum Viable Product (MVP) includes the core features necessary for a func
      ```bash
      npm start
      ```
-
     
 
    - **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
@@ -58,50 +57,7 @@ Our Minimum Viable Product (MVP) includes the core features necessary for a func
      # Install Tailwind CSS via npm
      npm install tailwindcss
      ```
-
-- **Back-end Development:**
-   - **Flask**: A micro web framework for Python, used for building the server-side application.
-
-     You can install Flask using pip, which comes with Python:
-
-     create
-     ```bash
-     pipenv install
-     ```
-     activate
-     ```bash
-     pipenv shell
-     ```
-     install flask and its dependencies
-     ```bash
-     pip install Flask
-     ```
-
-- **Database:**
-   - **SQLite**: A lightweight, serverless, and self-contained database for visualization of tables.
-
-     SQLite is often included with Python by default, so you may not need to install it separately.
-
-- **Object-Relational Mapping (ORM):**
-   - **SQLAlchemy**: A Python SQL toolkit and Object-Relational Mapping (ORM) library for database interactions.
-
-     You can install SQLAlchemy using pip:
-
-     ```bash
-     pip install SQLAlchemy
-     ```
-
-- **Version Control:**
-   - **Git and GitHub**: Used for version control and collaboration among the development team.
-
-- **Testing:**
-   - **Pytest**: A testing framework for Python, ensuring the reliability and correctness of the application.
-
-     You can install pytest using pip:
-
-     ```bash
-     pip install pytest
-     ```
+     
 ## Installation
 Follow these steps to install and run the Student Management System:
 1. Clone the repository:
@@ -130,6 +86,8 @@ To use the Student Management System, follow the provided installation instructi
 3. [Brian Atuti](https://github.com/B-atuti)
 4. [Ezra Machoka](https://github.com/EzraMachoka)
 
+## N/B
+This is the Frontend bit of the project
 
 ## License
 This project is licensed under the [MIT LICENCSE](https://github.com/mit-license/mit-license)
