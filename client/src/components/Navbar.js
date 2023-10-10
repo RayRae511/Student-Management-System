@@ -5,8 +5,19 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate()
-  const [loggedIn] = useState(localStorage.getItem('email') !== null)
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('email') !== null)
   const logout_address = "http://127.0.0.1:6942/logout"
+
+  function handleDetails(){
+    if (loggedIn){
+      navigate('/details')
+    }else{
+      const confirmSignIn = window.confirm("You need to sign in as an admin to access this page")
+      if (confirmSignIn){
+        navigate('/admin')
+      }
+    }
+  }
 
   function logOut() {
     axios({
@@ -17,7 +28,8 @@ const Navbar = () => {
       localStorage.removeItem('email')
       console.log(response.data)
       alert("Successfully logged out")
-      navigate('/home')
+      navigate('/homepage', {replace: true})
+      setLoggedIn(false)
     })
   }
 
@@ -41,13 +53,12 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="md:ml-20 text-xl">
-            <Link className="hover:text-black duration-500 font-semibold" to="/details">
+            <button className="hover:text-black duration-500 font-semibold" to="/details" onClick={handleDetails}>
               DETAILS |
-            </Link>
+            </button>
             {loggedIn ? (
               <button onClick={logOut}className="bg-white text-blue-500 py-2 px-4 rounded hover:bg-black hover:text-blue-400 font-semibold">LOG OUT</button>
-            ) : null
-            }
+            ) : null}
           </li>
         </ul>
       </div>

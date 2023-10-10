@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import './index.css'
 import ScholarStudentMS from './components/Homepage'
 import Details from "./components/Details"
+import Enrollment from './components/Enrollment';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path='Login' element={<Login />} />
         <Route path='/' element={<ScholarStudentMS />}/> 
         <Route path='/details' element={<Details/>}/>
+        <Route path='/enrollment' element={<Enrollment/>}/>
         </Routes>
      </BrowserRouter>
     </div>

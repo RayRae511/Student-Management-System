@@ -85,7 +85,7 @@ const Details = () => {
             <th className="border p-2">Student Name</th>
             <th className="border p-2">Student Contact</th>
             <th className="border p-2">Course Name</th>
-            <th className="border p-2">Course ID</th>
+            <th className="border p-2">Course code</th>
             <th className="border p-2">Date of Enrollment</th>
             <th className="border p-2">Action</th>
           </tr>

@@ -108,7 +108,7 @@ const Admin = () => {
         <p className='mt-8 text-xs font-light text-center text-black'>
           {""}
           Are you a student?
-          <a href='./login' className='font-medium text-blue-400 cursor-pointer hover:underline hover:text-black text-decoration-none'>Log back in!</a> or <a href='/' className='font-medium text-blue-600 cursor-pointer hover:underline hover:text-black text-decoration-none' >Sign Up</a>
+          <a href='./login' className='font-medium text-blue-400 cursor-pointer hover:underline hover:text-black text-decoration-none'>Log back in!</a> or <a href='./signup' className='font-medium text-blue-600 cursor-pointer hover:underline hover:text-black text-decoration-none' >Sign Up</a>
         </p>
       </div>
     </div>

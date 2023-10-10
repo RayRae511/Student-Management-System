@@ -47,7 +47,7 @@ const Login = () => {
         const token = response.data.token;
         alert('Logged in successfully');
         localStorage.setItem('token', token);
-        navigate('/home', {replace: true});
+        navigate('/enrollment', {replace: true});
       })
       .catch((error) => {
         console.error('Log in unsuccessful', error);
@@ -73,7 +73,7 @@ const Login = () => {
               type='text'
               name='Email'
               className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:ring-blue-400 focus:ring-gray-700 focus:outline-none focus:ring focus:ring-opacity-40'
-              placeholder='Enter your Email'
+              placeholder='Enter your email'
               value={email}
               onChange={handleEmailChange}
               required
