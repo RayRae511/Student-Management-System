@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from flask import Flask, request, jsonify, make_response, json
 from flask_jwt_extended import create_access_token, JWTManager, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required
 from datetime import datetime, timedelta, timezone
@@ -131,29 +131,11 @@ def logout():
     unset_jwt_cookies(response)
     return response
 
-# For profile page but scrapped it
-#@app.route('/profile/<getemail>', methods=['GET'])
-#@jwt_required()
-#def profile(getemail):
-#    print(getemail)
-#    if not getemail:
-#        return jsonify({'No email found'}), 404
-#    
-#    user = User.query.filter_by(email=getemail).first()
-#
-#    response_body = {
-#        'email': user.email,
-#        'id': user.id,
-#    }
-#
-#    return response_body
-
-
 
 port_number = 6942
 if __name__ == "__main__":
     app.run(debug=True, host='localhost', port=port_number)
-=======
+
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -226,4 +208,4 @@ def enroll():
 
 if __name__ == '__main__':
     app.run(debug=True)
->>>>>>> c622c4f71c66ec44da5620f28a9350cf49e58d85
+
