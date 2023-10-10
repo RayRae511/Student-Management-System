@@ -1,7 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const Navbar = () => {
+  const navigate = useNavigate()
+  const [loggedIn] = useState(localStorage.getItem('email') !== null)
+  const logout_address = "http://127.0.0.1:6942/logout"
+
+  function logOut() {
+    axios({
+      method: "POST",
+      url: logout_address,
+    })
+    .then((response) => {
+      localStorage.removeItem('email')
+      console.log(response.data)
+      alert("Successfully logged out")
+      navigate('/home')
+    })
+  }
+
+
   return (
     <div className="w-full top-0 left-0">
       <div className="md:flex items-center justify-between py-12 md:px-10 px-7 ">
@@ -11,20 +31,23 @@ const Navbar = () => {
         </div>
         <ul className="text-blue-500 md:flex md:items-center ">
           <li className="md:ml-20 text-xl">
-            <Link className="hover:text-black duration-500" to="/">
+            <Link className="hover:text-black duration-500 font-semibold" to="/">
               HOME |
             </Link>
           </li>
           <li className="md:ml-20 text-xl">
-            <Link className="hover:text-black duration-500" to="/enrollment">
+            <Link className="hover:text-black duration-500 font-semibold" to="/enrollment">
               ENROLLMENT |
             </Link>
           </li>
           <li className="md:ml-20 text-xl">
-            <Link className="hover:text-black duration-500" to="/details">
-              DETAILS
+            <Link className="hover:text-black duration-500 font-semibold" to="/details">
+              DETAILS |
             </Link>
-            
+            {loggedIn ? (
+              <button onClick={logOut}className="bg-white text-blue-500 py-2 px-4 rounded hover:bg-black hover:text-blue-400 font-semibold">LOG OUT</button>
+            ) : null
+            }
           </li>
         </ul>
       </div>

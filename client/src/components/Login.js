@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+//import Signup from './Signup';
 
 
 //login 
@@ -9,6 +10,7 @@ const Login = () => {
   const [password, setPassword]= useState("");
   const [error, setError] = useState("")
   const navigate = useNavigate()
+  const login_address = "http://127.0.0.1:6942/login"
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("Email");
@@ -34,19 +36,10 @@ const Login = () => {
     localStorage.setItem("Email", email)
     localStorage.setItem("password", password)
   }
-  // const handleInputChange = (e) => {
-  //   const {name, value } = e.target;
-  //   if (name === 'email'){
-  //     setEmail(value)
-  //   }
-  //   if (name === 'password'){
-  //     setPassword(value)
-  //   }
-  // }
 
   const handleLogIn = () => {
     axios
-      .post('http://127.0.0.1:6942/login', {
+      .post(login_address, {
         email,
         password,
       })
@@ -54,7 +47,7 @@ const Login = () => {
         const token = response.data.token;
         alert('Logged in successfully');
         localStorage.setItem('token', token);
-        navigate('http://127.0.0.1:5000/home')
+        navigate('/home', {replace: true});
       })
       .catch((error) => {
         console.error('Log in unsuccessful', error);
@@ -108,18 +101,19 @@ const Login = () => {
             < Link to={'#'} className='font-medium text-blue-400 cursor-pointer hover:underline hover:text-black text-decoration-none' > Click here </Link>
           </p>
           <div className=''>
-            <button className='w-full px-4 py-2 tracking-wide text-white bg-blue-400 border rounded rounded-md cursor-pointer transit hover:bg-white hover:text-blue-400 hover:border-blue-400' type='submit' onClick={handleLogIn}>Log in</button>
+            <button className='w-full px-4 py-2 tracking-wide text-white bg-blue-400 border  rounded-md cursor-pointer transit hover:bg-white hover:text-blue-400 hover:border-blue-400' type='submit' onClick={handleLogIn}>Log in</button>
           </div>
           {error && <p className='text-blue-400'>{error}</p>}
         </form>
         <p className='mt-8 text-xs font-light text-center text-black'>
           {""}
           Don't have an account?
-          <a href='/' className='font-medium text-blue-400 cursor-pointer hover:underline hover:text-black'> Sign up!</a></p>
-          <p className='text-xs'>
+         <a href='/signup' className='font-medium text-blue-400 cursor-pointer hover:underline hover:text-black text-decoration-none'>Sign up</a>
             {""}
+            <p>
             Are you an admin?
             <a href='./admin' className='text-xs font-medium text-blue-400 cursor-pointer hover:underline hover:text-black'> Log in!</a>
+            </p>
           </p>
       </div>
     </div>

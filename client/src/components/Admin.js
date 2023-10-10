@@ -7,6 +7,7 @@ const Admin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const admin_address = "http://127.0.0.1:6942/adminlogin"
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const Admin = () => {
 
   const handleAdmin = () => {
     axios
-      .post('http://127.0.0.1:6942/adminlogin', {
+      .post(admin_address, {
         email,
         password,
       })
@@ -30,7 +31,7 @@ const Admin = () => {
         const token = response.data.token;
         alert('Welcome back admin!');
         localStorage.setItem('token', token);
-        navigate('http://127.0.0.1:5000/details')
+        navigate('/details')
       })
       .catch((error) => {
         console.error('Log in error:', error);
@@ -68,7 +69,7 @@ const Admin = () => {
                <input 
               type='text'
               name='email'
-              className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:ring-blue-400 focus:ring-gray-700 focus:outline-none focus:ring focus:ring-opacity-40'
+              className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:outline-none focus:ring focus:ring-opacity-40'
               placeholder='Enter Admin Email'
               value={email}
               onChange={handleEmailChange}
@@ -85,8 +86,8 @@ const Admin = () => {
             </label>
             <input 
             type='password'
-            placeholder='Enter Admin password'
-            className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:ring-blue-400 focus:ring-gray-700 focus:outline-none focus:ring focus:ring-opacity-40'
+            placeholder='Enter admin password'
+            className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:outline-none focus:ring focus:ring-opacity-40'
             value={password}
             onChange={handlePasswordChange}
             required
