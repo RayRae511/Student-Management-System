@@ -3,11 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import PropTypes from "prop-types";
 
-function SignUp(props){
+function SignUp(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("")
+  const signup_address = "http://127.0.0.1:6942/Signup"
   const navigate = useNavigate()
  // const location = useLocation()
   
@@ -39,7 +40,7 @@ function SignUp(props){
   }
   const handleSignUp = () => {
     axios
-      .post('http://127.0.0.1:6942/Signup', {
+      .post(signup_address, {
         email,
         password,
       })
@@ -47,7 +48,7 @@ function SignUp(props){
         const token = response.data.token;
         alert('Signed up successfully');
         localStorage.setItem('token', token);
-        navigate('http://127.0.0.1:5000/home')
+        navigate('/enrollment', {replace: true});
       })
       .catch((error) => {
         console.error('Sign up was unsuccessful :( ', error);
