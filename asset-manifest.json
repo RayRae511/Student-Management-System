@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/RayRae511/Student-Management-System-Frontend-/static/css/main.cc26e3e6.css",
-    "main.js": "/RayRae511/Student-Management-System-Frontend-/static/js/main.09efb75f.js",
-    "index.html": "/RayRae511/Student-Management-System-Frontend-/index.html",
-    "main.cc26e3e6.css.map": "/RayRae511/Student-Management-System-Frontend-/static/css/main.cc26e3e6.css.map",
-    "main.09efb75f.js.map": "/RayRae511/Student-Management-System-Frontend-/static/js/main.09efb75f.js.map"
+    "main.css": "/RayRae511/Student-Management-System-Frontend/static/css/main.cc26e3e6.css",
+    "main.js": "/RayRae511/Student-Management-System-Frontend/static/js/main.09efb75f.js",
+    "index.html": "/RayRae511/Student-Management-System-Frontend/index.html",
+    "main.cc26e3e6.css.map": "/RayRae511/Student-Management-System-Frontend/static/css/main.cc26e3e6.css.map",
+    "main.09efb75f.js.map": "/RayRae511/Student-Management-System-Frontend/static/js/main.09efb75f.js.map"
   },
   "entrypoints": [
     "static/css/main.cc26e3e6.css",
