@@ -20,8 +20,9 @@ const Details = () => {
   const fetchStudents = () => {
     // Make an HTTP GET request to fetch student data
     axios
-      .get('http://127.0.0.1:5000/students') // Adjust the API endpoint
+      .get('http://127.0.0.1:5000/enroll') // Adjust the API endpoint
       .then((response) => {
+        console.log('API response:', response.data);
         setStudents(response.data.students);
       })
       .catch((error) => {

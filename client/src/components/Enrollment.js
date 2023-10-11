@@ -13,7 +13,7 @@ const Enrollment = () => {
 
   const handleSubmit = () => {
     axios
-      .post('http://127.0.0.1:6942/enroll', studentData) // Adjust the API endpoint
+      .post('http://127.0.0.1:5000/enroll', studentData) // Adjust the API endpoint
       .then((response) => {
         // Handle successful enrollment
         console.log('Enrollment successful');

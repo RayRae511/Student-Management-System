@@ -7,7 +7,7 @@ const Admin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const admin_address = "http://127.0.0.1:6942/adminlogin"
+  const admin_address = "http://127.0.0.1:5000/adminlogin"
   const navigate = useNavigate()
 
   useEffect(() => {

@@ -10,7 +10,7 @@ const Login = () => {
   const [password, setPassword]= useState("");
   const [error, setError] = useState("")
   const navigate = useNavigate()
-  const login_address = "http://127.0.0.1:6942/login"
+  const login_address = "http://127.0.0.1:5000/login"
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("Email");
