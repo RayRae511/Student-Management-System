@@ -3,14 +3,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"
 import PropTypes from "prop-types";
 
-function SignUp(){
+function Signup(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("")
-  const signup_address = "http://127.0.0.1:6942/Signup"
+  const signup_address = "http://127.0.0.1:5000/signup"
   const navigate = useNavigate()
- // const location = useLocation()
+ 
   
   useEffect(() => {
     const savedEmail = localStorage.getItem("email");
@@ -96,8 +96,8 @@ function SignUp(){
   }
 
 
-SignUp.propTypes = {
+Signup.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-export default SignUp;
+export default Signup;
