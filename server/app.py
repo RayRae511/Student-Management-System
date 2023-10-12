@@ -1,23 +1,27 @@
-
 from flask import Flask, request, jsonify, make_response, json
 from flask_jwt_extended import create_access_token, JWTManager, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required
 from datetime import datetime, timedelta, timezone
-from flask_cors import CORS
-from models import db, User
+from flask_cors import CORS, cross_origin
+from models import db, User, Enrollment
 from flask_bcrypt import Bcrypt
+from flask_migrate import Migrate
 from werkzeug.security import check_password_hash
-
+# import os
 
 app = Flask(__name__)
 jwt = JWTManager(app)
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 app.config['SECRET_KEY'] = 'THISISOURSECRETKEYLOLXD'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user_data.db"
+#postgres://user_data_iair_user:EEtXVJngNJrjFdWcGUNfwAjLiqtnkWOo@dpg-ckhpfkeafg7c73fvjerg-a.oregon-postgres.render.com/user_data_iair
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = True
 bcrypt = Bcrypt(app)
 db.init_app(app)
 CORS(app, supports_credentials=True)
+
+
+migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all()
@@ -57,7 +61,10 @@ def login():
         # Print the generated token for debugging
         #print(f"Token generated: {token.decode('utf-8')}")
 
-        return make_response(jsonify({'token': token}), 201)
+        return make_response(jsonify({
+            'token': token,
+            "message": "Logged in successfully"
+            }), 201)
     # returns 403 if the password is wrong
     return make_response(
         'Could not verify',
@@ -90,7 +97,7 @@ def get_admin_data():
     return {'Error 404! Data not found'}, 404
 
 
-@app.route("/Signup", methods=["POST"])
+@app.route("/signup", methods=["POST"])
 def signup():
     email = request.json['email']
     password = request.json['password']
@@ -131,81 +138,58 @@ def logout():
     unset_jwt_cookies(response)
     return response
 
+@app.route('/enrollment', methods=['GET'])
+def get_enrollments():
+    enrollments = Enrollment.query.all()
+    enrollment_data = [
+        {
+            'full_name': enrollment.full_name,
+            'contact': enrollment.contact,
+            'course': enrollment.course,
+            'course_id': enrollment.course_id,
+            'date': enrollment.date
+        }
+        for enrollment in enrollments
+    ]
+    return jsonify(enrollment_data)
 
-port_number = 6942
-if __name__ == "__main__":
-    app.run(debug=True, host='localhost', port=port_number)
+@cross_origin()
+@app.route('/enrollment', methods=['POST'])
+def create_enrollment():
+    data = request.json
+    full_name = data['full_name']
+    contact = data['contact']
+    course = data['course']
+    course_id = data['course_id']
+    date = data['date']
 
-from flask import Flask, request, jsonify, make_response
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+    enrollment = Enrollment(
+        full_name=full_name,
+        contact=contact,
+        course=course,
+        course_id=course_id,
+        date=date
+    )
 
+    db.session.add(enrollment)
+    db.session.commit()
 
-app = Flask(__name__)
-
-# Configure your database connection (SQLite in this example)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///enrollment.db'
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-
-
-# Define the Enrollment model
-class Enrollment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(255))
-    contact = db.Column(db.String(20))
-    course = db.Column(db.String(255))
-    course_id = db.Column(db.String(10))
-    date = db.Column(db.String(10))
-
-@app.route('/enroll', methods=['GET','POST'])
-def enroll():
-    if request.method == 'GET':
-        # Retrieve all enrollments from the database
-        enrollments = Enrollment.query.all()
-
-        # Create a list to store the enrollment data
-        enrollment_data = []
-
-        # Iterate over each enrollment and extract the required data
-        for enrollment in enrollments:
-            enrollment_info = {
-                'full_name': enrollment.full_name,
-                'contact': enrollment.contact,
-                'course': enrollment.course,
-                'course_id': enrollment.course_id,
-                'date': enrollment.date
-            }
-            enrollment_data.append(enrollment_info)
-
-        # Return the enrollment data as JSON
-        return jsonify(enrollment_data)
+    return jsonify({'message': 'Enrollment successful'}), 201
 
 
-    if request.method == 'POST':
-        data = request.json
-        full_name = data['full_name']
-        contact = data['contact']
-        course = data['course']
-        course_id = data['course_id']
-        date = data['date']
-
+@app.route('/enrollment', methods=['DELETE'])
+def delete_enrollment():
+    enrollment = Enrollment.query.get()
+    if not enrollment:
         
-        enrollment = Enrollment(
-            full_name=full_name,
-            contact=contact,
-            course=course,
-            course_id=course_id,
-            date=date
-        )
+        return jsonify({"message": "Student not found"}), 404
 
-        # Add the record to the database
-        db.session.add(enrollment)
-        db.session.commit()
+    db.session.delete(enrollment)
+    db.session.commit()
 
-        return jsonify({'message': 'Enrollment successful'})
+    #app.logger.info(f"Enrollment {enrollment.id} deleted successfully")
+    
+    return jsonify({"message": "Enrollment deleted successfully"})
 
 if __name__ == '__main__':
     app.run(debug=True)
-
