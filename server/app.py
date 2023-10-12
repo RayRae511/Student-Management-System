@@ -1,31 +1,30 @@
-from flask import Flask, request, jsonify, make_response
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask import Flask, request, jsonify, make_response, json
 from flask_jwt_extended import create_access_token, JWTManager, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required
 from datetime import datetime, timedelta, timezone
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+from models import db, User, Enrollment
 from flask_bcrypt import Bcrypt
+from flask_migrate import Migrate
 from werkzeug.security import check_password_hash
-from models import User, Enrollment
-from flask_restful import Api, Resource
-from sqlalchemy_serializer import SerializerMixin
-# Initialize Flask app
+# import os
+
 app = Flask(__name__)
 jwt = JWTManager(app)
-
-# Configure your database connection (SQLite in this example)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user_data.db'
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-# Configure JWT and other settings
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 app.config['SECRET_KEY'] = 'THISISOURSECRETKEYLOLXD'
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user_data.db"
+#postgres://user_data_iair_user:EEtXVJngNJrjFdWcGUNfwAjLiqtnkWOo@dpg-ckhpfkeafg7c73fvjerg-a.oregon-postgres.render.com/user_data_iair
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = True
 bcrypt = Bcrypt(app)
+db.init_app(app)
 CORS(app, supports_credentials=True)
 
+
+migrate = Migrate(app, db)
+
+with app.app_context():
+    db.create_all()
 
 # Login route
 @app.route('/login', methods=['POST'])
@@ -33,15 +32,19 @@ def login():
     auth = request.get_json()
 
     if not auth or not auth.get('email') or not auth.get('password'):
+        # returns 401 if any email or / and password is missing
         return make_response(
             'Could not verify',
             401,
             {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
         )
 
-    user = User.query.filter_by(email=auth.get('email')).first()
+    user = User.query \
+        .filter_by(email=auth.get('email')) \
+        .first()
 
     if not user:
+        # returns 401 if the user does not exist
         return make_response(
             'Could not verify',
             401,
@@ -49,18 +52,26 @@ def login():
         )
 
     if bcrypt.check_password_hash(user.password.decode('utf-8'), auth.get('password')):
+        # Generate the JWT Token
         token = create_access_token({
             'public_id': user.id,
             'exp': datetime.utcnow() + timedelta(minutes=30)
         }, app.config['SECRET_KEY'])
-        return make_response(jsonify({'token': token}), 201)
 
+        # Print the generated token for debugging
+        #print(f"Token generated: {token.decode('utf-8')}")
+
+        return make_response(jsonify({
+            'token': token,
+            "message": "Logged in successfully"
+            }), 201)
+    # returns 403 if the password is wrong
     return make_response(
         'Could not verify',
         403,
         {'WWW-Authenticate': 'Basic realm ="Wrong Password !!"'}
     )
-# Admin login route
+
 @app.route('/adminlogin', methods=['POST'])
 def admin_login():
     email = request.json['email']
@@ -73,8 +84,8 @@ def admin_login():
             "Access token": access_token
         })
     else:
-        return jsonify({"message": 'Invalid email or password'}), 401
-
+        return jsonify({"message":'Invalid email or password'}), 401
+    
 @app.route('/admin/data', methods=['GET'])
 @jwt_required
 def get_admin_data():
@@ -85,22 +96,25 @@ def get_admin_data():
     
     return {'Error 404! Data not found'}, 404
 
-@app.route("/Signup", methods=["POST"])
+
+@app.route("/signup", methods=["POST"])
 def signup():
     email = request.json['email']
     password = request.json['password']
 
     user_exists = User.query.filter_by(email=email).first() is not None
+    
 
     if user_exists:
-        return jsonify({"message": "There's a user that already exists!"}), 409
-
-    hashed_password = bcrypt.generate_password_hash(password)
-    new_user = User(email=email, password=hashed_password)
+        return jsonify({"message":"There's a user that already exist!"}), 409
+    
+    
+    hashed_passowrd = bcrypt.generate_password_hash(password)
+    new_user = User(email=email, password=hashed_passowrd)
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"message": "Signed up successfully"}), 201
+    return jsonify({"message":"Signed up successfully"}), 201
 
 @app.after_request
 def refresh_expiring_jwts(response):
@@ -113,86 +127,69 @@ def refresh_expiring_jwts(response):
             data = response.get_json()
             if type(data) is dict:
                 data["access_token"] = access_token
-                response.data = jsonify(data)
+                response.data = json.dumps(data)
         return response
     except (RuntimeError, KeyError):
         return response
-
+    
 @app.route('/logout', methods=['POST'])
 def logout():
-    response = jsonify({"message": 'Successfully logged out'})
+    response = jsonify({"message":'Successfully logged out'})
     unset_jwt_cookies(response)
     return response
 
-@app.route('/enroll', methods=['GET'])
-def get_students():
+@app.route('/enrollment', methods=['GET'])
+def get_enrollments():
+    enrollments = Enrollment.query.all()
+    enrollment_data = [
+        {
+            'full_name': enrollment.full_name,
+            'contact': enrollment.contact,
+            'course': enrollment.course,
+            'course_id': enrollment.course_id,
+            'date': enrollment.date
+        }
+        for enrollment in enrollments
+    ]
+    return jsonify(enrollment_data)
 
-    students = Enrollment.query.all()
+@cross_origin()
+@app.route('/enrollment', methods=['POST'])
+def create_enrollment():
+    data = request.json
+    full_name = data['full_name']
+    contact = data['contact']
+    course = data['course']
+    course_id = data['course_id']
+    date = data['date']
 
-    serializes_students = [student.to_dict() for student in students]
+    enrollment = Enrollment(
+        full_name=full_name,
+        contact=contact,
+        course=course,
+        course_id=course_id,
+        date=date
+    )
 
-    return jsonify(serializes_students)
+    db.session.add(enrollment)
+    db.session.commit()
+
+    return jsonify({'message': 'Enrollment successful'}), 201
 
 
+@app.route('/enrollment', methods=['DELETE'])
+def delete_enrollment():
+    enrollment = Enrollment.query.get()
+    if not enrollment:
+        
+        return jsonify({"message": "Student not found"}), 404
+
+    db.session.delete(enrollment)
+    db.session.commit()
+
+    #app.logger.info(f"Enrollment {enrollment.id} deleted successfully")
+    
+    return jsonify({"message": "Enrollment deleted successfully"})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=6942)
-
-#app = Flask(__name__)
-#api = Api(app)
-#
-## Configure your database connection (SQLite in this example)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///enrollment.db'
-#db = SQLAlchemy(app)
-#
-## Define the Enrollment model
-##class Enrollment(db.Model):
-##    id = db.Column(db.Integer, primary_key=True)
-##    full_name = db.Column(db.String(255))
-##    contact = db.Column(db.String(20))
-##    course = db.Column(db.String(255))
-##    course_id = db.Column(db.String(10))
-##    date = db.Column(db.String(10))
-#
-#class EnrollmentResource(Resource):
-#    def get(self):
-#        enrollments = Enrollment.query.all()
-#        enrollment_data = [
-#            {
-#                'full_name': enrollment.full_name,
-#                'contact': enrollment.contact,
-#                'course': enrollment.course,
-#                'course_id': enrollment.course_id,
-#                'date': enrollment.date
-#            }
-#            for enrollment in enrollments
-#        ]
-#        return {'enrollments': enrollment_data}
-#
-#    def post(self):
-#        data = request.json
-#        full_name = data['full_name']
-#        contact = data['contact']
-#        course = data['course']
-#        course_id = data['course_id']
-#        date = data['date']
-#
-#        enrollment = Enrollment(
-#            full_name=full_name,
-#            contact=contact,
-#            course=course,
-#            course_id=course_id,
-#            date=date
-#        )
-#
-#        db.session.add(enrollment)
-#        db.session.commit()
-#
-#        return {'message': 'Enrollment successful'}
-#
-#api.add_resource(EnrollmentResource, '/enroll')
-#
-#
-#if __name__ == '__main__':
-#    app.run(debug=True)
-
+    app.run(debug=True)
