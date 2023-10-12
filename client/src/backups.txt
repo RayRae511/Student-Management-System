@@ -1,0 +1,62 @@
+{/* Add student form */}
+      <div className="mt-4">
+        <h3 className="text-xl font-semibold mb-2">Add Student</h3>
+        <form>
+          {/* Input fields for student information */}
+          <input
+            type="text"
+            placeholder="Student Name"
+            value={newStudent.name}
+            onChange={(e) =>
+              setNewStudent({ ...newStudent, name: e.target.value })
+            }
+            className="w-full border rounded p-2 mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Student Contact"
+            value={newStudent.contact}
+            onChange={(e) =>
+              setNewStudent({ ...newStudent, contact: e.target.value })
+            }
+            className="w-full border rounded p-2 mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Course Name"
+            value={newStudent.courseName}
+            onChange={(e) =>
+              setNewStudent({ ...newStudent, courseName: e.target.value })
+            }
+            className="w-full border rounded p-2 mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Course code"
+            value={newStudent.courseId}
+            onChange={(e) =>
+              setNewStudent({ ...newStudent, courseId: e.target.value })
+            }
+            className="w-full border rounded p-2 mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Date of Enrollment"
+            value={newStudent.enrollmentDate}
+            onChange={(e) =>
+              setNewStudent({
+                ...newStudent,
+                enrollmentDate: e.target.value,
+              })
+            }
+            className="w-full border rounded p-2 mb-2"
+          />
+          <button
+            type="submit"
+            onClick={handleAddStudent}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
+          >
+            Add Student
+          </button>
+        </form>
+      </div>

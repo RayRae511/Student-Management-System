@@ -72,7 +72,7 @@ const Login = () => {
               <input 
               type='text'
               name='Email'
-              className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:ring-blue-400 focus:ring-gray-700 focus:outline-none focus:ring focus:ring-opacity-40'
+              className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:ring-blue-400  focus:outline-none focus:ring focus:ring-opacity-40'
               placeholder='Enter your email'
               value={email}
               onChange={handleEmailChange}
@@ -91,7 +91,7 @@ const Login = () => {
             type='password'
             name='password'
             placeholder='Enter your password'
-            className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:ring-blue-400 focus:ring-gray-700 focus:outline-none focus:ring focus:ring-opacity-40'
+            className='block w-full px-4 py-2 mt-2 text-black bg-white border border-blue-400 rounded-md focus:ring-blue-400  focus:outline-none focus:ring focus:ring-opacity-40'
             value={password}
             onChange={handlePasswordChange}
             required

@@ -56,7 +56,7 @@ const Admin = () => {
   
   return (
     <div className='relative flex flex-col justify-center min-h-screen overflow-hidden'>
-      <div className='w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-blue-400/60 ring ring-2 ring-gray-500 lg:max-w-xl'>
+      <div className='w-full p-6 m-auto bg-white rounded-md shadow-xl shadow-blue-400/60 ring  ring-gray-500 lg:max-w-xl'>
         <h1 className='mt-3 text-3xl font-bold text-center text-black'>SCHOLAR STUDENT MS</h1>
         <h2 className='mt-3 text-3xl text-center text-black'>Admin Login</h2>
         <form className='mt-6' onSubmit={handleSubmit}>
