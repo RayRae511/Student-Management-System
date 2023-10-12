@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate()
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('email') !== null)
-  const logout_address = "http://127.0.0.1:6942/logout"
+  const [loggedIn] = useState(localStorage.getItem('email') !== null)
+  const logout_address = "http://127.0.0.1:5000/logout"
 
   function handleDetails(){
     if (loggedIn){
@@ -28,8 +28,7 @@ const Navbar = () => {
       localStorage.removeItem('email')
       console.log(response.data)
       alert("Successfully logged out")
-      navigate('/homepage', {replace: true})
-      setLoggedIn(false)
+      navigate('/', {replace: true})
     })
   }
 
